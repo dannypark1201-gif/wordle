@@ -51,13 +51,11 @@ std::string WordleGame::trim(std::string s) {
 }
 
 void WordleGame::play() {
-    // Fixed 5-letter word
     int wordLength = 5;
 
     std::string answer = _bank.getRandom(wordLength);
     int maxG           = maxGuesses(wordLength);
 
-    // Header
     std::cout << "\n";
     for (int i = 0; i < 40; ++i) std::cout << "-";
     std::cout << "\n  WORDLE  |  " << wordLength
@@ -71,8 +69,6 @@ void WordleGame::play() {
 
     for (int attempt = 1; attempt <= maxG; ++attempt) {
         std::string raw;
-
-        // Input loop – keep asking until valid
         while (true) {
             std::cout << "  Guess " << attempt << "/" << maxG << ": ";
             std::getline(std::cin, raw);
@@ -87,21 +83,17 @@ void WordleGame::play() {
             else
                 break;
         }
-
         auto result = _evaluator.evaluate(raw, answer);
         history.emplace_back(raw, result);
         _display.showBoard(history, wordLength, maxG);
-
         bool won = std::all_of(result.begin(), result.end(),
             [](LetterState s){ return s == LetterState::CORRECT; });
-
         if (won) {
             std::cout << "  " << winMessage(attempt)
                       << " The word was " << toUpper(answer) << ".\n\n";
             return;
         }
     }
-
     std::cout << "  X The word was " << toUpper(answer)
               << ". Better luck next time!\n\n";
 }
