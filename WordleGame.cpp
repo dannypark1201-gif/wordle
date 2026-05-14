@@ -10,7 +10,7 @@ WordleGame::WordleGame(WordBank& bank)
 {}
 
 int WordleGame::maxGuesses(int wordLength) const {
-    return wordLength + 2;
+    return wordLength + 1;
 }
 
 const char* WordleGame::winMessage(int attempt) const {
